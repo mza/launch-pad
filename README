@@ -1,0 +1,14 @@
+Launch Pad
+----------
+
+Launch Pad is a collection of simple scripts for launching, monitoring and running distributed
+computational tasks using Amazon Web Services. It is the sister project to Mission Control 
+(http://github.com/mza/mission-control), a web application for managing distributed computation
+on elastic clusters.
+
+Launch Pad is an open source project, available under the MIT license (see doc/license.txt).
+
+The latest version of the Launch Pad source code is available here:
++ http://github.com/mza/launch-pad
+
+(c) 2008, Matt Wood : greenisgood.co.uk
