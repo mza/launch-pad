@@ -26,16 +26,24 @@ ActiveRecord::Base.establish_connection({
 })
 
 queue = Turbo::Queue.new(control_queue)
+queue.send(%q{register: haproxy})
+queue.send(%q{
+register: host
+name: ec2-1-2-3-4.amazonaws.com
+role: api
+})
 
-message_content = %q{
-  register: haproxy
-}
+queue.send(%q{
+unregister: host
+name: ec2-1-2-3-4.amazonaws.com
+role: api
+})
 
-queue.send(message_content)
 
 loop do
   
   puts "Checking queue"
+  activity = nil
   
   if queue.messages?
     for message in queue.messages
@@ -43,7 +51,24 @@ loop do
       message.clear
       command = LaunchPad::Parser.parse(message)
       begin
-        command.activate
+        if command.activate
+          puts "Command activated: complete"
+          
+          if command.sets_activity?
+            activity = command
+            puts "Activity reset to: #{activity.class.to_s}"
+          end
+          
+          if command.invalidates_config?
+            puts "Rebuilding configuration"
+            unless activity.nil?
+              activity.rebuild_config
+            end
+          end
+                    
+        else
+          puts "Command failed"
+        end
       rescue LaunchPad::UndefinedRegistrationException => e
         puts "Command not defined: #{e}"
       end
