@@ -1,7 +1,9 @@
 Manifest.txt
 README
 Rakefile
+bin/launch-pad
 bin/lp-monitor
+config/aws.yml
 config/aws_default.yml
 examples/align_control.rb
 examples/dispatch.rb
@@ -10,10 +12,13 @@ examples/queue.rb
 examples/retrieve.rb
 examples/set.rb
 history.txt
+launch-pad.gemspec
 lib/launch-pad.rb
 lib/turbo.rb
 lib/turbo/getter.rb
 lib/turbo/key.rb
+lib/turbo/message.rb
+lib/turbo/queue.rb
 lib/turbo/setter.rb
 post_install.txt
 script/console

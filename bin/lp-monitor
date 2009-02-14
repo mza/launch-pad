@@ -3,6 +3,12 @@ require 'right_aws'
 require 'turbo'
 
 control_queue = ARGV[0]
+
+if control_queue.nil?
+  puts "No queue name specified: exiting"
+  exit
+end
+
 host = `hostname`
 
 puts "#{host} monitoring #{control_queue}"

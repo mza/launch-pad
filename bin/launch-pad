@@ -3,4 +3,11 @@
 require 'rubygems'
 require 'daemons'
 
-Daemons.run('lp-monitor')
+command = ARGV[0]
+queue = ARGV[1]
+
+puts "Starting lp-monitor with queue: #{queue}"
+
+options = { :ARGV => [command, '--', queue]}
+
+Daemons.run("lp-monitor", options)
