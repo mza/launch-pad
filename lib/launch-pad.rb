@@ -6,6 +6,10 @@ require 'launch-pad/command'
 require 'launch-pad/command/haproxy'
 require 'launch-pad/exception/undefined_registration_exception'
 
+require 'active_record'
+
+require 'migrations/create_hosts'
+
 module LaunchPad
   VERSION = '0.2'
 end

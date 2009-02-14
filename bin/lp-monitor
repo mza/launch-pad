@@ -3,8 +3,10 @@ require 'right_aws'
 require 'turbo'
 require 'launch-pad'
 require 'yaml'
-
+require 'active_record'
+require 'sqlite3'
 control_queue = ARGV[0]
+root_dir = ARGV[1]
 
 if control_queue.nil?
   puts "No queue name specified: exiting"
@@ -14,6 +16,14 @@ end
 host = `hostname`
 
 puts "#{host} monitoring #{control_queue}"
+puts "Root directory: #{root_dir}"
+
+Turbo::Key.configuration = "#{root_dir}/config/aws.yml"
+
+ActiveRecord::Base.establish_connection({
+      :adapter => "sqlite3", 
+      :dbfile => "#{root_dir}/db/database.sqlite"
+})
 
 queue = Turbo::Queue.new(control_queue)
 
@@ -32,7 +42,11 @@ loop do
       puts "MESSAGE: #{message} (cleared)"
       message.clear
       command = LaunchPad::Parser.parse(message)
-      command.activate
+      begin
+        command.activate
+      rescue LaunchPad::UndefinedRegistrationException => e
+        puts "Command not defined: #{e}"
+      end
     end
   end
   

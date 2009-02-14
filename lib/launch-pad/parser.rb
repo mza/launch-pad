@@ -7,9 +7,10 @@ module LaunchPad
     include LaunchPad
     
     def self.parse(message)
-      command = nil
+      commands = nil
       
       incoming = YAML::load(message.to_s).symbolize_keys
+            
       begin
         command = "LaunchPad::#{incoming[:register].camelize}".constantize.new
       rescue NameError => exception
