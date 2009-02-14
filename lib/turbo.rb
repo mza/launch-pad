@@ -6,3 +6,5 @@ lib = File.dirname(__FILE__) + "/turbo/"
 require lib + 'key'
 require lib + 'getter'
 require lib + 'setter'
+require lib + 'queue'
+require lib + 'message'

@@ -1,3 +1,25 @@
-#!/usr/bin/env ruby
+require 'rubygems'
+require 'right_aws'
+require 'turbo'
 
-puts "Launch Pad: monitor"
+control_queue = ARGV[0]
+host = `hostname`
+
+puts "#{host} monitoring #{control_queue}"
+
+queue = Turbo::Queue.new(control_queue)
+queue.send("Hello, friend!")
+
+loop do
+  
+  puts "Checking queue"
+  
+  if queue.messages?
+    for message in queue.messages
+      puts "MESSAGE: #{message} (cleared)"
+      message.clear
+    end
+  end
+  
+  sleep 5
+end
