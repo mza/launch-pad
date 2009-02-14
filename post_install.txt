@@ -1,0 +1,3 @@
+
+For more information on launch-pad, see http://github.com/mza/launch-pad
+
