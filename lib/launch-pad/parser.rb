@@ -8,9 +8,8 @@ module LaunchPad
     
     def self.parse(message)
       command = nil
-      puts "Incoming: #{message}"
-      incoming = YAML::load(message).symbolize_keys
-      puts "Registering: #{incoming[:register]}"
+      
+      incoming = YAML::load(message.to_s).symbolize_keys
       begin
         command = "LaunchPad::#{incoming[:register].camelize}".constantize.new
       rescue NameError => exception
