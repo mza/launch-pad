@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'right_aws'
 require 'turbo'
+require 'launch-pad'
 
 control_queue = ARGV[0]
 
@@ -14,7 +15,9 @@ host = `hostname`
 puts "#{host} monitoring #{control_queue}"
 
 queue = Turbo::Queue.new(control_queue)
-queue.send("Hello, friend!")
+queue.send(%q{
+register: haproxy
+})
 
 loop do
   
@@ -24,6 +27,7 @@ loop do
     for message in queue.messages
       puts "MESSAGE: #{message} (cleared)"
       message.clear
+      command = LaunchPad::Parser.parse(message)
     end
   end
   

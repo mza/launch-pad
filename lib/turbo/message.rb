@@ -15,5 +15,9 @@ module Turbo
       self.content.to_s
     end
     
+    def to_yaml
+      self.content.to_yaml
+    end
+    
   end
 end
