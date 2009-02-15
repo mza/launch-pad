@@ -17,13 +17,16 @@ module LaunchPad
     
     def rebuild_config(options = {})
       location = options[:with_templates]
+      to = options[:to]
       puts "Rebuilding Haproxy config with: #{location}"
       template = ERB.new File.read("#{location}/haproxy.erb")
       result = template.result(binding)
-      File.open("#{options[:to]}/haproxy.conf", 'w') do |f|
+      File.open("#{to}/haproxy.conf", 'w') do |f|
         f.write result
       end
-      puts "Config file saved"
+      puts "Config file saved - restarting haproxy"
+      `killall haproxy`
+      `haproxy -f #{to}/haproxy.conf`
     end
     
     def servers_for(role, options = {})
