@@ -27,20 +27,6 @@ ActiveRecord::Base.establish_connection({
       :dbfile => "#{root_dir}/db/database.sqlite"
 })
 
-queue = Turbo::Queue.new(control_queue)
-queue.send(%q{register: haproxy})
-queue.send(%q{
-register: host
-name: ec2-1-2-3-4.amazonaws.com
-role: api
-})
-
-queue.send(%q{
-unregister: host
-name: ec2-1-2-3-4.amazonaws.com
-role: api
-})
-
 activity = nil
 rebuild_config = false
 
