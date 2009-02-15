@@ -30,6 +30,8 @@ ActiveRecord::Base.establish_connection({
 activity = nil
 rebuild_config = false
 
+queue = Turbo::Queue.new(control_queue)
+
 loop do
   
   puts "Checking queue"
