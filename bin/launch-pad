@@ -11,4 +11,4 @@ puts "Starting lp-monitor with queue: #{queue}"
 
 options = { :ARGV => [command, '--', queue, root_dir]}
 
-Daemons.run("/usr/local/bin/lp-monitor", options)
+Daemons.run("/usr/bin/lp-monitor", options)
