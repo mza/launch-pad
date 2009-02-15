@@ -77,7 +77,7 @@ loop do
       puts "Rebuilding..."
       unless activity.nil?
         puts "Rebuilding configuration"
-        activity.rebuild_config :with_templates => "#{root_dir}/templates"
+        activity.rebuild_config :with_templates => "#{root_dir}/templates", :to => "#{root_dir}/config"
       end
       rebuild_config = false
     end
