@@ -5,10 +5,10 @@ require 'daemons'
 
 command = ARGV[0]
 queue = ARGV[1]
-root_dir = ARG[2]
+root_dir = ARGV[2]
 
 puts "Starting lp-monitor with queue: #{queue}"
 
 options = { :ARGV => [command, '--', queue, root_dir]}
 
-Daemons.run("lp-monitor", options)
+Daemons.run("/usr/local/bin/lp-monitor", options)
