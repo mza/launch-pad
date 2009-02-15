@@ -12,6 +12,13 @@ module LaunchPad
     def sets_activity?
       true
     end
+    
+    def rebuild_config(options = {})
+      location = options[:with_templates]
+      puts "Rebuilding Haproxy config with: #{location}"
+      nodes = Node.all
+      puts "Registered nodes: #{nodes.size}"      
+    end
         
   end
 end

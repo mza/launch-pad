@@ -39,40 +39,49 @@ name: ec2-1-2-3-4.amazonaws.com
 role: api
 })
 
+activity = nil
+rebuild_config = false
 
 loop do
   
   puts "Checking queue"
-  activity = nil
   
   if queue.messages?
     for message in queue.messages
       puts "MESSAGE: #{message} (cleared)"
       message.clear
       command = LaunchPad::Parser.parse(message)
+      
       begin
-        if command.activate
-          puts "Command activated: complete"
-          
-          if command.sets_activity?
-            activity = command
-            puts "Activity reset to: #{activity.class.to_s}"
-          end
-          
-          if command.invalidates_config?
-            puts "Rebuilding configuration"
-            unless activity.nil?
-              activity.rebuild_config
-            end
-          end
-                    
-        else
-          puts "Command failed"
-        end
+        command.activate
+        puts "Command activated: complete (#{command.sets_activity?})"
       rescue LaunchPad::UndefinedRegistrationException => e
         puts "Command not defined: #{e}"
       end
+              
+      if command.sets_activity?
+        activity = command
+        puts "Activity reset to: #{activity.class.to_s}"
+      end
+        
+      if command.invalidates_config?
+        puts "Marking configuration for rebuild"
+        rebuild_config = true
+      end      
+      
     end
+
+    puts "Rebuild? #{rebuild_config}"
+        
+    if rebuild_config == true
+      puts "Rebuilding..."
+      unless activity.nil?
+        puts "Rebuilding configuration"
+        activity.rebuild_config :with_templates => "#{root_dir}/templates"
+      end
+      rebuild_config = false
+    end
+    
   end
   
   sleep 5
